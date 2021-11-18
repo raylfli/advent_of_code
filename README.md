@@ -11,7 +11,7 @@ Advent of Code can be found [here](https://adventofcode.com).
 
 Here you'll find my solutions to various Advent of Code events. 
 
-I use this as a fun way to develop and apply my programming skills, while capping off another calendar year.
+I use this as a fun way to cap off the calendar year while developing my programming skills and learning new languages.
 
 Happy Holidays! :)
 
