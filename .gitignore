@@ -1,9 +1,29 @@
-# Advent of Code 2020 - Raymond Li
+# Advent of Code 2021 - Raymond Li
 
-# Test Generated Files
-**/.hypothesis
-**/.pytest_cache
-**/__pycache__
+*.class
+*.log
+*~
 
-# Test Related Files
-**/*_tests.py
+# sbt specific
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+project/local-plugins.sbt
+.history
+.bsp
+
+# Scala-IDE specific
+.scala_dependencies
+.cache
+.classpath
+.project
+.settings
+classes/
+
+# idea
+.idea
+.idea_modules
+/.worksheet/

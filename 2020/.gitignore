@@ -1,0 +1,9 @@
+# Advent of Code 2020 - Raymond Li
+
+# Test Generated Files
+**/.hypothesis
+**/.pytest_cache
+**/__pycache__
+
+# Test Related Files
+**/*_tests.py
