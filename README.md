@@ -17,7 +17,9 @@ Happy Holidays! :)
 
 
 
-## Finisher Numbers
+## Yearly Breakdown
 
-* 2020: #7973
-
+| Year | Language | Finisher Number | 
+| ---- | -------- | --------------- |
+| 2020 | Python   | 7973            |
+| 2021 | Scala    | In progress...  |
