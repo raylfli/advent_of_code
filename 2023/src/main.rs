@@ -2,11 +2,13 @@ use std::env;
 use std::fs;
 
 mod day1;
+mod day2;
 
 fn run_day_main(day: u8, part2: bool, input: String) {
     match day {
         1 => day1::solution(input, part2),
-        _ => eprintln!("Invalid day!")
+        2 => day2::solution(input, part2),
+        _ => eprintln!("Invalid day!"),
     }
 }
 
