@@ -73,7 +73,7 @@ fn solution_p2(input: String) -> u32 {
 
 
 #[cfg(test)]
-mod tests{
+mod tests {
     use crate::day1::{solution_p1, solution_p2};
 
     #[test]
