@@ -11,25 +11,14 @@ fn run_day_main(day: u8, part2: bool, input: String) {
 }
 
 fn run_solution(day: u8, part2: bool) {
-    let input = fs::read_to_string(format!("./inputs/{}.txt", day));
-    match input {
-        Ok(s) => run_day_main(day, part2, s),
-        Err(e) => eprintln!("{e}")
-    }
+    let input = fs::read_to_string(format!("./inputs/{}.txt", day)).expect("Unable to read from file.");
+    run_day_main(day, part2, input);
 }
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    let day = &args[1].parse::<u8>();
-    let part2 = &args[2].parse::<u8>();
+    let day = &args[1].parse::<u8>().expect("Invalid day.");
+    let part2 = &args[2].parse::<u8>().expect("Invalid part2 flag.");
 
-    match day {
-        Ok(d) => {
-            match part2 {
-                Ok(p2) => run_solution(*d, *p2 == 2 as u8),
-                Err(e) => eprintln!("{e}"),
-            }
-        },
-        Err(e) => eprintln!("{e}"),
-    }
+    run_solution(*day, *part2 == 2 as u8);
 }
