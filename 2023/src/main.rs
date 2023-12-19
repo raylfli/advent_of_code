@@ -3,11 +3,13 @@ use std::fs;
 
 mod day1;
 mod day2;
+mod day3;
 
 fn run_day_main(day: u8, part2: bool, input: String) {
     match day {
         1 => day1::solution(input, part2),
         2 => day2::solution(input, part2),
+        3 => day3::solution(input, part2),
         _ => eprintln!("Invalid day!"),
     }
 }
