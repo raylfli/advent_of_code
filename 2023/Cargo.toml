@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 iset = "0.2.2"
 itertools = "0.12.0"
+counter = "0.5.7"
