@@ -25,6 +25,7 @@ mod day21;
 mod day22;
 mod day23;
 mod day24;
+mod day25;
 
 fn run_day_main(day: u8, part2: bool, input: String) {
     match day {
@@ -52,6 +53,7 @@ fn run_day_main(day: u8, part2: bool, input: String) {
         22 => day22::solution(input, part2),
         23 => day23::solution(input, part2),
         24 => day24::solution(input, part2),
+        25 => day25::solution(input, part2),
         _ => eprintln!("Invalid day!"),
     }
 }
