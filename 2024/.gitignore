@@ -1,4 +1,7 @@
 venv
 
+# AoC Inputs
+inputs/*.txt
+
 # Cache
 *.pyc
