@@ -2,7 +2,7 @@
 Advent of Code 2024 - Day 8 Tests
 """
 
-from solutions.d8 import solve_part1, solve_part2, compute_antinodes
+from solutions.d08 import solve_part1, solve_part2, compute_antinodes
 
 
 class TestSuite:

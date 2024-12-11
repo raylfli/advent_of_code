@@ -2,7 +2,7 @@
 Advent of Code 2024 - Day 6 Tests
 """
 
-from solutions.d6 import solve_part1, solve_part2
+from solutions.d06 import solve_part1, solve_part2
 
 
 class TestSuite:
