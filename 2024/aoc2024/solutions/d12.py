@@ -3,6 +3,7 @@ Advent of Code - Day 12: Garden Groups
 """
 
 from collections import defaultdict
+from itertools import pairwise
 
 type GridIndex = tuple[int, int]
 type RegionId = tuple[str, int]
@@ -18,7 +19,7 @@ def _parse_grid(s: str) -> list[str]:
     return grid
 
 
-def _matching_neighbours_4(grid: list[str], r: int, c: int) -> set[GridIndex]:
+def _matching_neighbours(grid: list[str], r: int, c: int) -> set[GridIndex]:
     """
     Return the locations of matching neighbours beside (r, c) on the 4-connected grid.
     """
@@ -32,18 +33,20 @@ def _matching_neighbours_4(grid: list[str], r: int, c: int) -> set[GridIndex]:
     return matching
 
 
-def _matching_neighbours_8(grid: list[str], r: int, c: int) -> set[GridIndex]:
+def _open_neighbours(grid: list[str], r: int, c: int) -> set[GridIndex]:
     """
-    Return the locations of matching neighbours beside (r, c) on the 8-connected grid.
+    Return the directions of non-matching neighbours beside (r, c) on the 4-connected grid.
     """
-    neighbours = {(-1, 0), (0, -1), (1, 0), (0, 1), (-1, -1), (-1, 1), (1, -1), (1, 1)}
-    matching = set()  # set[GridIndex]
+    neighbours = {(-1, 0), (0, -1), (1, 0), (0, 1)}
+    non_matching = set()  # set[GridIndex]
     for dr, dc in neighbours:
         check_r, check_c = r + dr, c + dc
         if 0 <= check_r < len(grid) and 0 <= check_c < len(grid[0]):
-            if grid[r][c] == grid[check_r][check_c]:
-                matching.add((check_r, check_c))
-    return matching
+            if grid[r][c] != grid[check_r][check_c]:
+                non_matching.add((dr, dc))
+        else:
+            non_matching.add((dr, dc))
+    return non_matching
 
 
 def _process_region(grid: list[str], region_map: dict[GridIndex, RegionId],
@@ -68,7 +71,7 @@ def _process_region(grid: list[str], region_map: dict[GridIndex, RegionId],
         visited.add(check_i)
         region_map[check_i] = region_id
 
-        matching = _matching_neighbours_4(grid, *check_i)
+        matching = _matching_neighbours(grid, *check_i)
         num_neighbours = len(matching)
         areas[region_id] += 1
         perimeters[region_id] += 4 - num_neighbours
@@ -78,6 +81,50 @@ def _process_region(grid: list[str], region_map: dict[GridIndex, RegionId],
             perimeter_cells[region_id].add(check_i)
 
         frontier.extend(matching)
+
+
+def _calculate_num_sides(grid: list[str], perimeter_cells: set[GridIndex]) -> int:
+    """
+    Walk the perimeter of a region and find the number of sides it has.
+
+    INSPIRED BY https://www.reddit.com/r/adventofcode/comments/1hcxmpp/2024_day_12_part_2_visualisation_of_my_first/
+    """
+    # for each point
+    # - find which 'open' boundaries it has (i.e. which directions have fences)
+    # - add the point to a set of those directional fences
+    fence_sides = defaultdict(list)
+    for r, c in perimeter_cells:
+        open_neighbours = _open_neighbours(grid, r, c)
+        for on in open_neighbours:
+            fence_sides[on].append((r, c))
+
+    # then for each direction
+    # - find consecutive fence segments
+    sides = 0
+    for (dr, _), cells in fence_sides.items():
+        # dr == 0 means left/right side fences
+        # dc == 0 means top/bottom side fences
+        fixed_i = 1 if dr == 0 else 0
+        unfixed_i = 1 - fixed_i
+
+        groups = defaultdict(list)  # dict[int, list[int]]
+        for cell in cells:
+            groups[cell[fixed_i]].append(cell[unfixed_i])
+
+        for fence_cells in groups.values():
+            if len(fence_cells) == 1:
+                sides += 1
+                continue
+
+            fence_cells.sort()
+            these_sides = 1
+            for a, b in pairwise(fence_cells):
+                if a + 1 != b:
+                    these_sides += 1
+
+            sides += these_sides
+
+    return sides
 
 
 def _calculate_fence_price(areas: dict[RegionId, int], perimeters: dict[RegionId, int]):
@@ -152,4 +199,9 @@ def solve_part2(s: str) -> int:
             _process_region(grid, region_map, areas, perimeters, plant_region_count, r, c,
                             perimeter_cells)
 
-    return _calculate_fence_price(areas, perimeters)
+    # calculate sides
+    num_sides = dict()  # dict[RegionId, int]
+    for region_id, perim_cells in perimeter_cells.items():
+        num_sides[region_id] = _calculate_num_sides(grid, perim_cells)
+
+    return _calculate_fence_price(areas, num_sides)
