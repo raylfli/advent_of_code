@@ -6,6 +6,7 @@ from solutions.d13 import solve_part1, solve_part2
 
 
 class TestSuite:
+
     INPUT_STR = """Button A: X+94, Y+34
 Button B: X+22, Y+67
 Prize: X=8400, Y=5400
