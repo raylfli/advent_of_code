@@ -10,8 +10,8 @@ def _parse_reports(s: str) -> list[list[int]]:
     Parse input string into row-based levels.
     """
     levels = []
-    for row in s.strip().split('\n'):
-        levels.append([int(n) for n in row.split(' ')])
+    for row in s.strip().split("\n"):
+        levels.append([int(n) for n in row.split(" ")])
 
     return levels
 
@@ -44,11 +44,13 @@ def _check_diffs(diffs: list[int], tolerance: int = 0) -> bool:
     incr_flag = diffs[0] >= 0
     for d in diffs:
         if (
-                d == 0
-                or incr_flag and d < 0
-                or not incr_flag and d > 0
-                or abs(d) < 1
-                or abs(d) > 3
+            d == 0
+            or incr_flag
+            and d < 0
+            or not incr_flag
+            and d > 0
+            or abs(d) < 1
+            or abs(d) > 3
         ):
             return False
 
@@ -83,7 +85,7 @@ def solve_part2(s: str) -> int:
             num_safe += 1
         else:
             for i in range(len(report)):
-                diffs = _calculate_diffs(report[:i] + report[i + 1:])
+                diffs = _calculate_diffs(report[:i] + report[i + 1 :])
 
                 if _check_diffs(diffs):
                     num_safe += 1

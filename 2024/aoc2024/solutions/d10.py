@@ -10,15 +10,20 @@ def _parse_grid(s: str) -> list[list[int]]:
     Parse the grid into 2D array.
     """
     grid = []
-    for row in s.strip().split('\n'):
+    for row in s.strip().split("\n"):
         grid.append([])
         for cell in row.strip():
             grid[-1].append(int(cell))
     return grid
 
 
-def _setup_metric_array[T](grid: list[list[int]], init_nine: Callable[[int, int], T],
-                           init_blank: Callable[[], T]):
+def _setup_metric_array[
+    T
+](
+    grid: list[list[int]],
+    init_nine: Callable[[int, int], T],
+    init_blank: Callable[[], T],
+):
     """
     Return initialized metrics array.
 
@@ -35,8 +40,14 @@ def _setup_metric_array[T](grid: list[list[int]], init_nine: Callable[[int, int]
     return scores
 
 
-def _update_metric[T](grid: list[list[int]], scores: list[list[T]], height: int,
-                      strategy: Callable[[T, T], T]):
+def _update_metric[
+    T
+](
+    grid: list[list[int]],
+    scores: list[list[T]],
+    height: int,
+    strategy: Callable[[T, T], T],
+):
     """
     Update the metrics array.
 
@@ -49,13 +60,17 @@ def _update_metric[T](grid: list[list[int]], scores: list[list[T]], height: int,
             if cell == height:
                 for dr, dc in neighbours:
                     check_r, check_c = r + dr, c + dc
-                    if 0 <= check_r < len(grid) and 0 <= check_c < len(grid[0]) and \
-                            grid[check_r][check_c] == height + 1:
+                    if (
+                        0 <= check_r < len(grid)
+                        and 0 <= check_c < len(grid[0])
+                        and grid[check_r][check_c] == height + 1
+                    ):
                         scores[r][c] = strategy(scores[r][c], scores[check_r][check_c])
 
 
-def _compute_trailhead_metric[T](grid: list[list[int]], scores: list[list[T]],
-                                 strategy: Callable[[T], int]):
+def _compute_trailhead_metric[
+    T
+](grid: list[list[int]], scores: list[list[T]], strategy: Callable[[T], int]):
     """
     Compute the trailhead metric.
 
@@ -78,8 +93,12 @@ def solve_part1(s: str) -> int:
 
     # update score
     for height in range(8, -1, -1):
-        _update_metric(grid, scores, height,
-                       strategy=lambda old_score, new_score: old_score.union(new_score))
+        _update_metric(
+            grid,
+            scores,
+            height,
+            strategy=lambda old_score, new_score: old_score.union(new_score),
+        )
 
     return _compute_trailhead_metric(grid, scores, len)
 
@@ -92,7 +111,11 @@ def solve_part2(s: str) -> int:
     scores = _setup_metric_array(grid, lambda _r, _c: 1, lambda: 0)
 
     for height in range(8, -1, -1):
-        _update_metric(grid, scores, height,
-                       strategy=lambda old_score, new_score: old_score + new_score)
+        _update_metric(
+            grid,
+            scores,
+            height,
+            strategy=lambda old_score, new_score: old_score + new_score,
+        )
 
     return _compute_trailhead_metric(grid, scores, lambda cell: cell)

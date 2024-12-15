@@ -10,14 +10,17 @@ def _parse_rules_updates(s: str) -> tuple[list[tuple[int, int]], list[list[int]]
     """
     Parse the input string into rules and page updates.
     """
-    rules, updates = s.split('\n\n', maxsplit=1)
+    rules, updates = s.split("\n\n", maxsplit=1)
 
     # parse rules
-    rules = [rule.strip().split('|') for rule in rules.strip().split('\n')]
+    rules = [rule.strip().split("|") for rule in rules.strip().split("\n")]
     rules = [(int(rule[0]), int(rule[1])) for rule in rules]
 
     # parse updates
-    updates = [[int(page.strip()) for page in update.strip().split(',')] for update in updates.strip().split('\n')]
+    updates = [
+        [int(page.strip()) for page in update.strip().split(",")]
+        for update in updates.strip().split("\n")
+    ]
 
     return rules, updates
 

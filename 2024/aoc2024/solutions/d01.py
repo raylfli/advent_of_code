@@ -10,8 +10,8 @@ def _parse_two_list(s: str) -> (list[int], list[int]):
     Parse input string into two lists.
     """
     l1, l2 = [], []
-    for line in s.strip().split('\n'):
-        left, right = line.split('   ', maxsplit=1)
+    for line in s.strip().split("\n"):
+        left, right = line.split("   ", maxsplit=1)
         l1.append(int(left))
         l2.append(int(right))
 

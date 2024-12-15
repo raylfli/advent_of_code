@@ -14,7 +14,7 @@ def _parse_grid(s: str) -> list[str]:
     Parse the grid into a list representation.
     """
     grid = []
-    for row in s.strip().split('\n'):
+    for row in s.strip().split("\n"):
         grid.append(row.strip())
     return grid
 
@@ -49,10 +49,16 @@ def _open_neighbours(grid: list[str], r: int, c: int) -> set[GridIndex]:
     return non_matching
 
 
-def _process_region(grid: list[str], region_map: dict[GridIndex, RegionId],
-                    areas: dict[RegionId, int], perimeters: dict[RegionId, int],
-                    plant_region_count: dict[str, int], r: int, c: int,
-                    perimeter_cells: dict[RegionId, set[GridIndex]] = None):
+def _process_region(
+    grid: list[str],
+    region_map: dict[GridIndex, RegionId],
+    areas: dict[RegionId, int],
+    perimeters: dict[RegionId, int],
+    plant_region_count: dict[str, int],
+    r: int,
+    c: int,
+    perimeter_cells: dict[RegionId, set[GridIndex]] = None,
+):
     """
     Process an entire region since we've found a new region.
     """
@@ -165,7 +171,9 @@ def solve_part1(s: str) -> int:
             if (r, c) in region_map:
                 continue
 
-            _process_region(grid, region_map, areas, perimeters, plant_region_count, r, c)
+            _process_region(
+                grid, region_map, areas, perimeters, plant_region_count, r, c
+            )
 
     return _calculate_fence_price(areas, perimeters)
 
@@ -196,8 +204,16 @@ def solve_part2(s: str) -> int:
             if (r, c) in region_map:
                 continue
 
-            _process_region(grid, region_map, areas, perimeters, plant_region_count, r, c,
-                            perimeter_cells)
+            _process_region(
+                grid,
+                region_map,
+                areas,
+                perimeters,
+                plant_region_count,
+                r,
+                c,
+                perimeter_cells,
+            )
 
     # calculate sides
     num_sides = dict()  # dict[RegionId, int]

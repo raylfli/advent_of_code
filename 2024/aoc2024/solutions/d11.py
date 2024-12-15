@@ -13,10 +13,7 @@ def _blink_stone(marking: int) -> list[int]:
         return [1]
     s = str(marking)
     if len(s) % 2 == 0:
-        return [
-            int(s[:len(s) // 2]),
-            int(s[len(s) // 2:])
-        ]
+        return [int(s[: len(s) // 2]), int(s[len(s) // 2 :])]
     return [marking * 2024]
 
 
@@ -24,9 +21,11 @@ def solve_part1(s: str, blinks: int = 25) -> int:
     """
     Solve AoC D11 P1.
     """
-    stones = [int(n) for n in s.strip().split(' ')]
+    stones = [int(n) for n in s.strip().split(" ")]
 
-    stone_map = defaultdict(lambda: 0)  # dict[int, int] marking -> number of occurrences
+    stone_map = defaultdict(
+        lambda: 0
+    )  # dict[int, int] marking -> number of occurrences
     for stone in stones:
         stone_map[stone] += 1
 

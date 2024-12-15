@@ -54,13 +54,18 @@ def _find_first_blank(disk: list[int], size: int) -> int | None:
     return None
 
 
-def _move_file(disk: list[int], file_id: int, file_size: int,
-               file_location: int, blank_location: int):
+def _move_file(
+    disk: list[int],
+    file_id: int,
+    file_size: int,
+    file_location: int,
+    blank_location: int,
+):
     """
     Moves file at index file_location into index blank_location.
     """
-    disk[blank_location:blank_location + file_size] = [file_id] * file_size
-    disk[file_location:file_location + file_size] = [-1] * file_size
+    disk[blank_location : blank_location + file_size] = [file_id] * file_size
+    disk[file_location : file_location + file_size] = [-1] * file_size
 
 
 def solve_part1(s: str) -> int:
@@ -107,7 +112,9 @@ def solve_part2(s: str) -> int:
     disk, files = _parse_disk(s)
     for file_id, size in reversed(list(enumerate(files))):
         valid_blank_i = _find_first_blank(disk, size)
-        file_i = disk.index(file_id)  # raises ValueError if not found, should never arise
+        file_i = disk.index(
+            file_id
+        )  # raises ValueError if not found, should never arise
         if valid_blank_i is not None and file_i >= valid_blank_i:
             _move_file(disk, file_id, size, file_i, valid_blank_i)
 

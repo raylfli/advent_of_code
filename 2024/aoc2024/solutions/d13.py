@@ -7,11 +7,12 @@ import re
 type ButtonIncrement = tuple[int, int]
 type GridIndex = tuple[int, int]
 
-PATT_COORDINATE = re.compile(r'X[+=](\d+), Y[+=](\d+)')
+PATT_COORDINATE = re.compile(r"X[+=](\d+), Y[+=](\d+)")
 
 
-def _parse_setup(s: str, prize_incr: int = 0) -> tuple[
-    ButtonIncrement, ButtonIncrement, GridIndex]:
+def _parse_setup(
+    s: str, prize_incr: int = 0
+) -> tuple[ButtonIncrement, ButtonIncrement, GridIndex]:
     """
     Parse single claw machine setup.
     """
@@ -21,21 +22,24 @@ def _parse_setup(s: str, prize_incr: int = 0) -> tuple[
     return (
         (int(matches[0][0]), int(matches[0][1])),
         (int(matches[1][0]), int(matches[1][1])),
-        (prize_incr + int(matches[2][0]), prize_incr + int(matches[2][1]))
+        (prize_incr + int(matches[2][0]), prize_incr + int(matches[2][1])),
     )
 
 
-def _parse_setups(s: str, prize_incr: int = 0) -> list[
-    tuple[ButtonIncrement, ButtonIncrement, GridIndex]]:
+def _parse_setups(
+    s: str, prize_incr: int = 0
+) -> list[tuple[ButtonIncrement, ButtonIncrement, GridIndex]]:
     """
     Parse claw machine setups.
     """
-    machines = s.strip().split('\n\n')
+    machines = s.strip().split("\n\n")
     return [_parse_setup(machine, prize_incr=prize_incr) for machine in machines]
 
 
-def _collect_prize(machine: tuple[ButtonIncrement, ButtonIncrement, GridIndex],
-                   max_presses: float = 100) -> int:
+def _collect_prize(
+    machine: tuple[ButtonIncrement, ButtonIncrement, GridIndex],
+    max_presses: float = 100,
+) -> int:
     """
     Find the minimum number of tokens to collect the prize. Return -1 if prize cannot be reached.
     """
@@ -44,7 +48,12 @@ def _collect_prize(machine: tuple[ButtonIncrement, ButtonIncrement, GridIndex],
     b = (ax * py - ay * px) / (ax * by - ay * bx)
     a = (px - b * bx) / ax
 
-    if a.is_integer() and b.is_integer() and 0 <= a <= max_presses and 0 <= b <= max_presses:
+    if (
+        a.is_integer()
+        and b.is_integer()
+        and 0 <= a <= max_presses
+        and 0 <= b <= max_presses
+    ):
         return int(a * 3 + b)
     else:
         return -1
@@ -70,7 +79,7 @@ def solve_part2(s: str) -> int:
     machines = _parse_setups(s, prize_incr=10000000000000)
     total = 0
     for machine in machines:
-        tokens = _collect_prize(machine, max_presses=float('inf'))
+        tokens = _collect_prize(machine, max_presses=float("inf"))
         if tokens >= 0:
             total += tokens
     return total

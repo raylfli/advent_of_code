@@ -7,9 +7,9 @@ def _parse_equation(s: str) -> tuple[int, tuple[int, ...]]:
     """
     Parse single equation to the target number and a tuple of numbers.
     """
-    target, raw_nums = s.split(': ', maxsplit=1)
+    target, raw_nums = s.split(": ", maxsplit=1)
     target = int(target)
-    nums = tuple(int(n) for n in raw_nums.strip().split(' '))
+    nums = tuple(int(n) for n in raw_nums.strip().split(" "))
     return target, nums
 
 
@@ -35,7 +35,11 @@ def check_equation(target: int, nums: tuple[int, ...], concat: bool = False) -> 
 
     res_add = check_equation(target, (num_add, *rest), concat=concat)
     res_mul = check_equation(target, (num_mul, *rest), concat=concat)
-    res_concat = True if not concat else check_equation(target, (num_concat, *rest), concat=concat)
+    res_concat = (
+        True
+        if not concat
+        else check_equation(target, (num_concat, *rest), concat=concat)
+    )
 
     return res_add or res_mul or (concat and res_concat)
 
@@ -45,7 +49,7 @@ def solve_part1(s: str, concat: bool = False) -> int:
     Solve AoC D7 P1.
     """
     total = 0
-    for equation in s.strip().split('\n'):
+    for equation in s.strip().split("\n"):
         target, nums = _parse_equation(equation)
         if check_equation(target, nums, concat=concat):
             total += target

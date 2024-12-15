@@ -17,12 +17,14 @@ def _parse_grid(s: str) -> tuple[Grid, GridIndex]:
     """
     grid = []
     robot_loc = (-1, -1)
-    for r, row in enumerate(s.strip().split('\n')):
+    for r, row in enumerate(s.strip().split("\n")):
         grid.append([])
         for c, cell in enumerate(row.strip()):
-            if cell == '@':
+            if cell == "@":
                 robot_loc = (r, c)
-                grid[-1].append('.')  # no need to represent robot, will track coordinates
+                grid[-1].append(
+                    "."
+                )  # no need to represent robot, will track coordinates
             else:
                 grid[-1].append(cell)
 
@@ -35,22 +37,17 @@ def _parse_grid_double_set(s: str) -> tuple[set[GridIndex], set[GridIndex], Grid
 
     Returns the box locations (left cell of the box), wall locations, and the robot's location.
     """
-    s = s.translate({
-        ord('#'): '##',
-        ord('O'): '[]',
-        ord('.'): '..',
-        ord('@'): '@.'
-    })
+    s = s.translate({ord("#"): "##", ord("O"): "[]", ord("."): "..", ord("@"): "@."})
     boxes: set[GridIndex] = set()
     walls: set[GridIndex] = set()
     robot_loc = (-1, -1)
-    for r, row in enumerate(s.strip().split('\n')):
+    for r, row in enumerate(s.strip().split("\n")):
         for c, cell in enumerate(row.strip()):
-            if cell == '@':
+            if cell == "@":
                 robot_loc = (r, c)
-            elif cell == '#':
+            elif cell == "#":
                 walls.add((r, c))
-            elif cell == '[':
+            elif cell == "[":
                 boxes.add((r, c))
     return boxes, walls, robot_loc
 
@@ -62,31 +59,30 @@ def _parse_moves(s: str) -> list[Direction]:
     moves = []
     for c in s.strip():
         match c:
-            case '<':
+            case "<":
                 moves.append((0, -1))
-            case '>':
+            case ">":
                 moves.append((0, 1))
-            case '^':
+            case "^":
                 moves.append((-1, 0))
-            case 'v':
+            case "v":
                 moves.append((1, 0))
             case _:
                 pass
     return moves
 
 
-def _parse_input(s: str, double_size: bool = False) -> tuple[Grid, GridIndex, list[Direction]]:
+def _parse_input(
+    s: str, double_size: bool = False
+) -> tuple[Grid, GridIndex, list[Direction]]:
     """
     Parse the input string into a warehouse map and a list of moves.
     """
-    map_str, dirs_str = s.strip().split('\n\n', maxsplit=1)
+    map_str, dirs_str = s.strip().split("\n\n", maxsplit=1)
     if double_size:
-        map_str = map_str.translate({
-            ord('#'): '##',
-            ord('O'): '[]',
-            ord('.'): '..',
-            ord('@'): '@.'
-        })
+        map_str = map_str.translate(
+            {ord("#"): "##", ord("O"): "[]", ord("."): "..", ord("@"): "@."}
+        )
     grid, robot = _parse_grid(map_str)
     moves = _parse_moves(dirs_str)
     return grid, robot, moves
@@ -105,10 +101,13 @@ def _check_box_push(grid: Grid, loc: GridIndex, d: Direction) -> GridIndex | Non
 
     blank_space = None
     while 0 <= r <= max_r and 0 <= c <= max_c:
-        r, c = r + dr, c + dc  # first iteration is guaranteed OK, robot will never be on the edge
-        if grid[r][c] == '#':
+        r, c = (
+            r + dr,
+            c + dc,
+        )  # first iteration is guaranteed OK, robot will never be on the edge
+        if grid[r][c] == "#":
             break  # exit loop, can't push box anywhere
-        elif grid[r][c] == '.':
+        elif grid[r][c] == ".":
             blank_space = (r, c)
             break  # exit loop, found blank space
 
@@ -117,7 +116,9 @@ def _check_box_push(grid: Grid, loc: GridIndex, d: Direction) -> GridIndex | Non
     return blank_space
 
 
-def _check_box_push_vert_double(grid: Grid, loc: GridIndex, d: Direction) -> set[GridIndex] | None:
+def _check_box_push_vert_double(
+    grid: Grid, loc: GridIndex, d: Direction
+) -> set[GridIndex] | None:
     """
     Return a set of valid cells that can be pushed.
 
@@ -129,14 +130,14 @@ def _check_box_push_vert_double(grid: Grid, loc: GridIndex, d: Direction) -> set
     check_cell = grid[check_r][check_c]
 
     # base cases
-    if check_cell == '.':
+    if check_cell == ".":
         return {loc}
-    elif check_cell == '#':
+    elif check_cell == "#":
         return None
 
     # otherwise, need to check if a different box can be pushed
     to_check = []
-    if check_cell == '[':
+    if check_cell == "[":
         to_check.append((check_r, check_c))
         to_check.append((check_r, check_c + 1))
     else:
@@ -160,7 +161,7 @@ def _calculate_gps(grid: Grid) -> int:
     total = 0
     for r, row in enumerate(grid):
         for c, cell in enumerate(row):
-            if cell == 'O' or cell == '[':
+            if cell == "O" or cell == "[":
                 total += r * 100 + c
     return total
 
@@ -177,12 +178,12 @@ def solve_part1(s: str) -> int:
         if box_loc is not None:
             # move box
             br, bc = box_loc
-            grid[br][bc] = 'O'
+            grid[br][bc] = "O"
 
             # move robot and reset box
             # if no box to be moved, this will overwrite the newly created box
             r, c = r + dr, c + dc
-            grid[r][c] = '.'
+            grid[r][c] = "."
 
     return _calculate_gps(grid)
 
@@ -196,11 +197,11 @@ def _str_grid(grid: Grid, robot_loc: GridIndex) -> str:
         lst2 = []
         for c, cell in enumerate(row):
             if (r, c) == robot_loc:
-                lst2.append('@')
+                lst2.append("@")
             else:
                 lst2.append(cell)
-        lst.append(''.join(lst2))
-    return '\n'.join(lst)
+        lst.append("".join(lst2))
+    return "\n".join(lst)
 
 
 def solve_part2(s: str) -> int:
@@ -215,10 +216,10 @@ def solve_part2(s: str) -> int:
         check_cell = grid[check_r][check_c]
 
         # check for only robot move
-        if check_cell == '.':
+        if check_cell == ".":
             r, c = check_r, check_c
             continue
-        elif check_cell == '#':
+        elif check_cell == "#":
             continue  # hit a wall
 
         # check for movement in sideways direction
@@ -239,14 +240,14 @@ def solve_part2(s: str) -> int:
 
                 # move robot
                 r, c = r + dr, c + dc
-                grid[r][c] = '.'
+                grid[r][c] = "."
             continue
 
         # box must be being pushed up or down
 
         # check if that box can move
         # - this means both cells of the box can move
-        if check_cell == '[':
+        if check_cell == "[":
             push_box_l = check_r - dr, check_c
             push_box_r = check_r - dr, check_c + 1
         else:
@@ -270,7 +271,7 @@ def solve_part2(s: str) -> int:
             for r1, c1 in to_move:
                 r2, c2 = r1 + dr, c1 + dc
                 grid[r2][c2] = grid[r1][c1]
-                grid[r1][c1] = '.'
+                grid[r1][c1] = "."
 
             # move the robot
             r, c = r + dr, c + dc

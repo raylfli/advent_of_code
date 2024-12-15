@@ -13,19 +13,20 @@ def _get_antenna_locations(s: str) -> tuple[dict[str, set[tuple[int, int]]], int
     """
     locations = defaultdict(set)
     max_x = -1
-    rows = s.strip().split('\n')
+    rows = s.strip().split("\n")
     max_y = len(rows) - 1
     for r, row in enumerate(rows):
         row = row.strip()
         max_x = len(row) - 1
         for c, cell in enumerate(row):
-            if cell != '.':
+            if cell != ".":
                 locations[cell].add((c, r))
     return locations, max_x, max_y
 
 
-def compute_antinodes(antennas: set[tuple[int, int]],
-                      max_x: int, max_y: int) -> set[tuple[int, int]]:
+def compute_antinodes(
+    antennas: set[tuple[int, int]], max_x: int, max_y: int
+) -> set[tuple[int, int]]:
     """
     Compute the antinodes of these antennas.
     """
@@ -41,8 +42,9 @@ def compute_antinodes(antennas: set[tuple[int, int]],
     return antinodes
 
 
-def compute_antinodes_infinite(antennas: set[tuple[int, int]],
-                               max_x: int, max_y: int) -> set[tuple[int, int]]:
+def compute_antinodes_infinite(
+    antennas: set[tuple[int, int]], max_x: int, max_y: int
+) -> set[tuple[int, int]]:
     """
     Compute the antinodes of these antennas as long as the antinodes are
     still within the maximum bounds.
@@ -78,9 +80,11 @@ def solve_part1(s: str, antinode_strategy: callable = compute_antinodes) -> int:
     Solve AoC D8 P1.
     """
     antennas, max_x, max_y = _get_antenna_locations(s)
-    antinodes = reduce(lambda acc, update: acc.union(antinode_strategy(update, max_x, max_y)),
-                       antennas.values(),
-                       set())
+    antinodes = reduce(
+        lambda acc, update: acc.union(antinode_strategy(update, max_x, max_y)),
+        antennas.values(),
+        set(),
+    )
     return len(antinodes)
 
 
