@@ -12,7 +12,9 @@ class TestSuite:
 
 class TestPart1(TestSuite):
 
-    INPUT_STR = """xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))\n"""
+    INPUT_STR = (
+        """xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))\n"""
+    )
 
     def test_1(self):
         assert solve_part1(self.INPUT_STR) == 161

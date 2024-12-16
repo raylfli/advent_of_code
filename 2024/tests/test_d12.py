@@ -76,5 +76,3 @@ AAAAAA
 
     def test_5(self):
         assert solve_part2(self.INPUT_STR_5) == 368
-
-
