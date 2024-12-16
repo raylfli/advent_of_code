@@ -166,6 +166,22 @@ def _calculate_gps(grid: Grid) -> int:
     return total
 
 
+def _str_grid(grid: Grid, robot_loc: GridIndex) -> str:
+    """
+    Stringify grid and robot position.
+    """
+    lst = []
+    for r, row in enumerate(grid):
+        lst2 = []
+        for c, cell in enumerate(row):
+            if (r, c) == robot_loc:
+                lst2.append("@")
+            else:
+                lst2.append(cell)
+        lst.append("".join(lst2))
+    return "\n".join(lst)
+
+
 def solve_part1(s: str) -> int:
     """
     Solve AoC D15 P1.
@@ -186,22 +202,6 @@ def solve_part1(s: str) -> int:
             grid[r][c] = "."
 
     return _calculate_gps(grid)
-
-
-def _str_grid(grid: Grid, robot_loc: GridIndex) -> str:
-    """
-    Stringify grid and robot position.
-    """
-    lst = []
-    for r, row in enumerate(grid):
-        lst2 = []
-        for c, cell in enumerate(row):
-            if (r, c) == robot_loc:
-                lst2.append("@")
-            else:
-                lst2.append(cell)
-        lst.append("".join(lst2))
-    return "\n".join(lst)
 
 
 def solve_part2(s: str) -> int:

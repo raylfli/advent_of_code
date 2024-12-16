@@ -59,7 +59,7 @@ class TestPart1(TestSuite):
     def test_1(self):
         assert solve_part1(self.INPUT_STR_1) == 10092
 
-    def test_1(self):
+    def test_2(self):
         assert solve_part1(self.INPUT_STR_2) == 2028
 
 
