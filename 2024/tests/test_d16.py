@@ -60,4 +60,3 @@ class TestPart2(TestSuite):
 
     def test_2(self):
         assert solve_part2(self.INPUT_STR_2) == 64
-
