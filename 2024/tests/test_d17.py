@@ -31,4 +31,4 @@ class TestPart1(TestSuite):
 class TestPart2(TestSuite):
 
     def test_1(self):
-        assert solve_part2(self.INPUT_STR_2, parallel=False) == 117440
+        assert solve_part2(self.INPUT_STR_2) == 117440

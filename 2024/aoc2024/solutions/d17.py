@@ -19,7 +19,7 @@ def _parse_input(s: str) -> tuple[list[int], list[int]]:
     return registers, program
 
 
-def _run_program(registers: list[int], program: list[int]) -> str:
+def _run_program(registers: list[int], program: list[int]) -> list[int]:
     """
     Run the program on the given initial register values and program instructions.
     """
@@ -52,7 +52,29 @@ def _run_program(registers: list[int], program: list[int]) -> str:
             registers[2] = registers[0] >> combo
 
         ins_pt += 2
-    return ",".join(str(n) for n in outputs)
+    return outputs
+
+
+def _generate_program(program: list[int]) -> int:
+    """
+    Return the minimum starting register A value to replicate the program itself.
+    """
+
+    def _generate_program_recur(i: int, acc: int) -> int | None:
+        """
+        Recursively generate the program.
+        """
+        for n in range(8):
+            reg_a = (acc << 3) + n
+            if _run_program([reg_a, 0, 0], program) == program[i:]:
+                if i == 0:
+                    return reg_a
+                ret = _generate_program_recur(i - 1, reg_a)
+                if ret is not None:
+                    return ret
+        return None
+
+    return _generate_program_recur(len(program) - 1, 0)
 
 
 def solve_part1(s: str) -> str:
@@ -61,12 +83,18 @@ def solve_part1(s: str) -> str:
     """
     registers, program = _parse_input(s)
 
-    return _run_program(registers, program)
+    return ",".join(str(n) for n in _run_program(registers, program))
 
 
 def solve_part2(s: str) -> int:
     """
     Solve AoC D17 P2.
+
+    Each 'iteration' of my input program only depends on register A. B, and C are set
+    by the value of A at the beginning of the iteration.
+
+    Additionally, only the last 3 bits of A matter at any given iteration, so we only need to
+    check candidates in the range of 0-7.
     """
     _, program = _parse_input(s)
-    return -1
+    return _generate_program(program)
