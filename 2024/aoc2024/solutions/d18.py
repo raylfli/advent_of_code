@@ -38,7 +38,7 @@ def _parse_input_lst(s: str) -> list[GridIndex]:
 
 def _a_star(corrupted: set[GridIndex], mem_size: int) -> int:
     """
-    Run A-Star form cell (0, 0) to (mem_size, mem_size).
+    Run A-Star from cell (0, 0) to (mem_size, mem_size).
 
     Returns -1 if no path is found.
     """
