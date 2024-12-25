@@ -20,7 +20,8 @@ Happy Holidays! :)
 ## Yearly Breakdown
 
 | Year | Language | Finisher Number | 
-| ---- | -------- | --------------- |
+|------|----------|-----------------|
 | 2020 | Python   | 7973            |
 | 2021 | Scala    | 8741            |
 | 2023 | Rust     | 10178           |
+| 2024 | Python   | 934             |
